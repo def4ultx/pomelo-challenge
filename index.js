@@ -5,10 +5,24 @@ const Inert = require('@hapi/inert')
 const Vision = require('@hapi/vision')
 const HapiSwagger = require('hapi-swagger')
 
+const Transformer = require('./src/transformer.js')
+
 const init = async () => {
 	const server = Hapi.server({
 		port: 3000,
 		host: 'localhost'
+	})
+
+	server.route({
+		method: 'POST',
+		path: '/transform',
+		handler: Transformer.handler,
+		options: {
+			tags: ['api'],
+			validate: {
+				payload: Transformer.requestSchema
+			}
+		}
 	})
 
 	const swaggerOptions = {
