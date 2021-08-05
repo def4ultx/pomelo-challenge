@@ -1,0 +1,26 @@
+<html>
+  <body>
+	<table border=1>
+		<tr>
+			<th>Name</th>
+			<th>Description</th>
+			<th>Stars</th>
+		</tr>
+
+		{{#each data.items}}
+			<tr>
+				<td><a href="{{this.html_url}}">{{this.name}}</a></td>
+				<td>{{this.description}}</td>
+				<td>{{this.stargazers_count}}</td>
+			</tr>
+		{{/each}}
+
+	</table>
+
+	<a href="?page={{pagination.prev}}&limit={{pagination.limit}}">Prev</a>
+	{{#each pagination.shown}}
+		<a href="?page={{this.page}}&limit={{this.limit}}"> {{this.page}} </a>
+	{{/each}}
+	<a href="?page={{pagination.next}}&limit={{pagination.limit}}">Next</a>
+ </body>
+</html>

@@ -6,12 +6,15 @@ const Vision = require('@hapi/vision')
 const HapiSwagger = require('hapi-swagger')
 
 const Transformer = require('./src/transformer.js')
+const Search = require('./src/search.js')
 
 const init = async () => {
 	const server = Hapi.server({
 		port: 3000,
 		host: 'localhost'
 	})
+
+	await server.register(require('@hapi/vision'))
 
 	server.route({
 		method: 'POST',
@@ -23,6 +26,26 @@ const init = async () => {
 				payload: Transformer.requestSchema
 			}
 		}
+	})
+
+	server.route({
+		method: 'GET',
+		path: '/',
+		handler: Search.handler,
+		options: {
+			tags: ['api'],
+			validate: {
+				query: Search.querySchema
+			}
+		}
+	})
+
+	server.views({
+		engines: {
+			html: require('handlebars')
+		},
+		relativeTo: __dirname,
+		path: 'templates'
 	})
 
 	const swaggerOptions = {
